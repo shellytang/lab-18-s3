@@ -25,7 +25,7 @@
 //   desc: 'my cat',
 // };
 
-mongoose.Promise = Promise;
+// mongoose.Promise = Promise;
 
 // describe('Pic Routes', function() {
 //   afterEach(done => {
