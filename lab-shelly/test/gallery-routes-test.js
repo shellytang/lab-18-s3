@@ -223,6 +223,5 @@ describe('Gallery Routes', function() {
         });
       });
     });
-
   });
 });
