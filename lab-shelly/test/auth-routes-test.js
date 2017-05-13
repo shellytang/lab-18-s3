@@ -7,12 +7,8 @@ const Promise = require('bluebird');
 const User = require('../model/user');
 
 mongoose.Promise = Promise;
-
 require('../server');
-
 const url = `http://localhost:${process.env.PORT}`;
-
-console.log('URL: ', url);
 
 const exampleUser = {
   username: 'shelly',
@@ -23,9 +19,9 @@ const exampleUser = {
 describe('Auth Routes', function() {
 
   describe('POST /api/signup', function() {
-    after( done => {
+    after(done => {
       User.remove({})
-      .then( () => done())
+      .then(() => done())
       .catch(done);
     });
     describe('a request with a valid body', function() {
@@ -60,9 +56,11 @@ describe('Auth Routes', function() {
       });
     });
   });
-
+// ++++ GET ++++
   describe('GET api/signin', function() {
-    describe('a request with a valid username and passoword', function() {
+
+    describe('a request with a valid username and password', function() {
+
       before(done => {
         let user = new User(exampleUser);
         user.generatePasswordHash(exampleUser.password)
@@ -91,7 +89,8 @@ describe('Auth Routes', function() {
       });
     });
 
-    describe('a request with an invalid username and password', function() {
+    describe('an improperly formmated request', function() {
+
       before( done => {
         let user = new User(exampleUser);
         user.generatePasswordHash(exampleUser.password)
@@ -108,12 +107,25 @@ describe('Auth Routes', function() {
         .then(() => done())
         .catch(done);
       });
-      it('should return a 401 error', done => {
-        request.get(`${url}/api/signin`)
-        .auth('milo', 'notpassword')
-        .end((err, res) => {
-          expect(res.status).to.equal(401);
-          done();
+
+      describe('a request with an invalid username and password', function() {
+        it('should return a 401 error', done => {
+          request.get(`${url}/api/signin`)
+          .auth('milo', 'notpassword')
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        });
+      });
+      describe('a request to an unregistered route', function () {
+        it('should return a 404 error', done => {
+          request.get(`${url}/api/signmein`)
+          .auth('milo', 'notpassword')
+          .end((err, res) => {
+            expect(res.status).to.equal(404);
+            done();
+          });
         });
       });
     });
