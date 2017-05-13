@@ -1,10 +1,9 @@
 'use strict';
 
+const debug = require('debug')('cfgram:pic-routes');
 const multer = require('multer');
 const dataDir =  `${__dirname}/../data`;
 const upload = multer({dest: dataDir});
-// const createError = require('http-errors');
-const debug = require('debug')('cfgram:pic-routes');
 const bearerAuth = require('../lib/bearer-auth-middleware');
 const picController = require('../controller/pic-controller');
 
@@ -18,16 +17,12 @@ module.exports = function(router) {
   });
 
   router.delete('/gallery/:galleryId/pic/:picId', bearerAuth, (req, res) => {
-    debug('#DELETE /pic/:id');
-
-    console.log('galleryID :', req.params.galleryId);
-    console.log('picID :', req.params.picId);
+    debug('#DELETE /gallery/:galleryId/pic/:picId');
 
     picController.deletePic(req.params.galleryId, req.params.picId)
     .then(err => res.status(204).send(err.message))
     .catch(err => res.status(err.status).send(err.message));
 
   });
-
   return router;
 };
