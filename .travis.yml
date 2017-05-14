@@ -20,4 +20,4 @@ branches:
   - shelly
 before_script: npm i
 script:
-  - npm run test
+  - cd lab-shelly && npm run test
