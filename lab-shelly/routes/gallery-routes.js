@@ -3,7 +3,6 @@
 const debug = require('debug')('cfgram:gallery-routes');
 const galleryController = require('../controller/gallery-controller');
 const bearerAuth = require('../lib/bearer-auth-middleware');
-const createError = require('http-errors');
 
 module.exports = function(router) {
 
