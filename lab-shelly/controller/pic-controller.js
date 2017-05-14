@@ -25,12 +25,10 @@ module.exports = exports = {};
 
 exports.createPic = function(req) {
   debug('#createPic');
-
   if(!req.file) return createError(400, 'Resource required');
   if(!req.file.path) return createError(500, 'File not saved');
 
   let ext = path.extname(req.file.originalname);
-
   let params = {
     ACL: 'public-read',
     Bucket: process.env.AWS_BUCKET,
@@ -39,7 +37,6 @@ exports.createPic = function(req) {
   };
 
   return Gallery.findById(req.params.id)
-
   .then(() => s3UploadProm(params))
   .then(s3Data => {
 
@@ -53,7 +50,6 @@ exports.createPic = function(req) {
       imageURI: s3Data.Location,
       objectKey: s3Data.Key,
     };
-    console.log('PIC DATA?? ', picData);
     return new Pic(picData).save();
   })
   .then(pic => pic)
@@ -62,25 +58,14 @@ exports.createPic = function(req) {
 
 exports.deletePic = function(galleryId, picId) {
   debug('#deletePic');
-
-  // if(!galleryId) return createError(400, 'Bad request');
-  // if(!picId) return createError(400, 'Bad request');
-
   return Pic.findByIdAndRemove(picId)
   .then(pic => {
-
-    console.log('whats the pic?', pic);
-
     let params = {
       Bucket: process.env.AWS_BUCKET,
       Key: pic.objectKey,
     };
-    console.log('is the key still here?', pic.objectKey);
-    console.log('the params: ', params);
-    //
     return s3.deleteObject(params);
   })
-  // .then(params => s3.deleteObject(params))
   .then(pic => Promise.resolve(pic))
   .catch(err => Promise.reject(createError(404, 'Not found')));
 };

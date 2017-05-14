@@ -11,7 +11,7 @@ exports.createGallery = function(user) {
   debug('#createGallery');
   return new Gallery(user).save()
   .then(gallery => gallery)
-  .catch(err => Promise.reject(err));
+  .catch(() => Promise.reject(createError(400, 'Invalid body')));
 };
 
 exports.fetchGallery = function(id, userId) {
@@ -28,6 +28,7 @@ exports.fetchGallery = function(id, userId) {
 
 exports.updateGallery = function(id, galleryBody, userId) {
   debug('#updateGallery');
+  if (!galleryBody.name || !galleryBody.desc) return Promise.reject(createError(400, 'Invalid body'));
 
   return Gallery.findByIdAndUpdate(id, galleryBody, {new: true})
   .then(gallery => {
@@ -37,6 +38,7 @@ exports.updateGallery = function(id, galleryBody, userId) {
     return Promise.resolve(gallery);
   })
   .catch(() => Promise.reject(createError(404, 'Gallery not found')));
+
 };
 
 exports.deleteGallery = function(id) {
