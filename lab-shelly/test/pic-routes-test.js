@@ -82,31 +82,3 @@ describe('Pic Routes', function() {
     });
   });
 });
-//   describe('DELETE /api/gallery/:galleryID/pic/:picID', () => {
-//     beforeEach(done => {
-//       let examplePic = {
-//         name: 'milo',
-//         desc: 'my cat',
-//         objectKey: `${__dirname}/test-assests/milo.jpg`,
-//         userID: this.tempUser._id,
-//         galleryID: this.tempGallery._id,
-//       };
-//       new Pic(examplePic).save()
-//       .then(pic => {
-//         console.log('created a pic?', pic);
-//         this.tempPic = pic;
-//         done();
-//       })
-//       .catch(() => done());
-//     });
-//     it('should return a 204 response', done =>{
-//       request.delete(`${__dirname}/api/gallery/${this.tempGallery._id}/pic/${this.tempPic._id}`)
-//       .set({Authorization: `Bearer ${this.tempToken}`})
-//       .end((err, res) => {
-//         console.log('the body??', res.body);
-//         expect(res.status).to.equal(204);
-//         done();
-//       });
-//     });
-//   });
-// });
