@@ -25,7 +25,6 @@ module.exports = exports = {};
 
 exports.createPic = function(req) {
   debug('#createPic');
-
   if(!req.file) return createError(400, 'Resource required');
   if(!req.file.path) return createError(500, 'File not saved');
 

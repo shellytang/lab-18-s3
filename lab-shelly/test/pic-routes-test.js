@@ -4,13 +4,11 @@ const expect = require('chai').expect;
 const request = require('superagent');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
-
 const User = require('../model/user');
 const Gallery = require('../model/gallery');
 const Pic = require('../model/pic');
 
 const url = `http://localhost:${process.env.PORT}`;
-
 const exampleUser = {
   username: 'shelly',
   password: 'password123',
@@ -20,14 +18,7 @@ const exampleGallery = {
   name: 'milo gallery',
   desc: 'cat',
 };
-// const examplePic = {
-//   name: 'milo',
-//   desc: 'my cat',
-//   image: `${__dirname}/data/milo.jpg`,
-// };
-
 mongoose.Promise = Promise;
-
 describe('Pic Routes', function() {
   beforeEach(done => {
     new User(exampleUser)
@@ -68,27 +59,54 @@ describe('Pic Routes', function() {
   });
 
   describe('POST /api/gallery/:id/pic', () => {
-    it.only('should return a pic and 200 response', done => {
-      request.post(`${url}/api/gallery/${this.tempGallery._id}/pic`)
-      .field('name', 'milo')
-      .field('desc', 'my cat')
-      .attach('image', `${__dirname}/test-assests/milo.jpg`)
-      .set({Authorization: `Bearer ${this.tempToken}`})
-      .end((err, res) => {
-        console.log('the body??', res.body);
-        let date = new Date(res.body.created).toString();
-        expect(res.body.name).to.equal('milo');
-        expect(res.body.desc).to.equal('my cat');
-        expect(res.body.userId).to.equal(exampleGallery.userID);
-        expect(res.body.galleryID).to.equal(`${this.tempGallery._id}`);
-        expect(date).to.not.equal('Invalid Date');
-        expect(res.body.imageURI).to.not.equal(null);
-        expect(res.body.objectKey).to.not.equal(null);
-        expect(res.status).to.equal(200);
-        done();
+    describe('a valid request body', () => {
+      it('should return a pic and 200 response', done => {
+        request.post(`${url}/api/gallery/${this.tempGallery._id}/pic`)
+        .field('name', 'milo')
+        .field('desc', 'my cat')
+        .attach('image', `${__dirname}/test-assests/milo.jpg`)
+        .set({Authorization: `Bearer ${this.tempToken}`})
+        .end((err, res) => {
+          let date = new Date(res.body.created).toString();
+          expect(res.body.name).to.equal('milo');
+          expect(res.body.desc).to.equal('my cat');
+          expect(res.body.userId).to.equal(exampleGallery.userID);
+          expect(res.body.galleryID).to.equal(`${this.tempGallery._id}`);
+          expect(date).to.not.equal('Invalid Date');
+          expect(res.body.imageURI).to.not.equal(null);
+          expect(res.body.objectKey).to.not.equal(null);
+          expect(res.status).to.equal(200);
+          done();
+        });
       });
-
     });
-
   });
 });
+//   describe('DELETE /api/gallery/:galleryID/pic/:picID', () => {
+//     beforeEach(done => {
+//       let examplePic = {
+//         name: 'milo',
+//         desc: 'my cat',
+//         objectKey: `${__dirname}/test-assests/milo.jpg`,
+//         userID: this.tempUser._id,
+//         galleryID: this.tempGallery._id,
+//       };
+//       new Pic(examplePic).save()
+//       .then(pic => {
+//         console.log('created a pic?', pic);
+//         this.tempPic = pic;
+//         done();
+//       })
+//       .catch(() => done());
+//     });
+//     it('should return a 204 response', done =>{
+//       request.delete(`${__dirname}/api/gallery/${this.tempGallery._id}/pic/${this.tempPic._id}`)
+//       .set({Authorization: `Bearer ${this.tempToken}`})
+//       .end((err, res) => {
+//         console.log('the body??', res.body);
+//         expect(res.status).to.equal(204);
+//         done();
+//       });
+//     });
+//   });
+// });
