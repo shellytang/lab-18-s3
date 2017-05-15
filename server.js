@@ -28,7 +28,4 @@ app.use('/api', authRoutes(router));
 app.use('/api', galleryRoutes(router));
 app.use('/api', picRoutes(router));
 
-// app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-const server = module.exports = app.listen(PORT, () => debug(`Listening on ${PORT}`));
-
-server.isRunning = true;
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
