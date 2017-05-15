@@ -4,7 +4,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "no-console": "off",
     "indent": [ "error", 2 ],
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
   },
   "env": {
     "es6": true,

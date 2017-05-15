@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '4.4.3'
+  - 'stable'
 services:
   - mongodb
 addons:
@@ -8,14 +8,17 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
+      - gcc-5
+      - g++-5
 env:
-  - CXX=g++-4.8
-  - MONGODB_URI=mongodb://localhost/test
-  - PORT=3000
-  - APP_SECRET='lulwat top secret'
+  - CXX=g++-5
 sudo: required
-before_script: npm i -g eslint mocha
+# safelist
+branches:
+  only:
+  - master
+  - shelly
+before_install: cd lab-shelly
+before_script: npm i
 script:
-  - ./script/test-submissions.sh
+  - npm run test
