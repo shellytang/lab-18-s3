@@ -17,8 +17,8 @@ sudo: required
 branches:
   only:
   - master
-  - shelly
-before_install: cd lab-shelly
+  - shelly-lab19
 before_script: npm i
 script:
-  - npm run test
+  - npm run build
+  - npm run coveralls
