@@ -11,7 +11,6 @@ const galleryRoutes = require('./routes/gallery-routes');
 const picRoutes = require('./routes/pic-routes');
 const bodyParser = require('body-parser').json();
 const mongoose = require('mongoose');
-const debug = require('debug')('cfgram:server');
 
 const app = module.exports = express();
 const router = express.Router();
